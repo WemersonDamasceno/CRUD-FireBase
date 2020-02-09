@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    <item
+        android:id="@+id/menu_novo"
+        android:icon="@drawable/ic_novo"
+        android:title="Novo"
+        app:showAsAction="always"></item>
+
+    <item
+        android:id="@+id/menu_atualizar"
+        android:icon="@drawable/ic_atualiza"
+        android:title="Atualizar"
+        app:showAsAction="always"></item>
+
+    <item
+        android:id="@+id/menu_deletar"
+        android:icon="@drawable/ic_deleta"
+        android:title="Deletar"
+        app:showAsAction="always"></item>
+
+</menu>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "232180690372",
+    "firebase_url": "https://myfirstapp-bd.firebaseio.com",
+    "project_id": "myfirstapp-bd",
+    "storage_bucket": "myfirstapp-bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:232180690372:android:570be36a24df65ce370891",
+        "android_client_info": {
+          "package_name": "com.example.testebancodadosfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "232180690372-7mr0n89f2g312opc4j3hgp28094k6205.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTPkx2PGfZaZjUVS8VMvaHYxoP9bZ6sao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "232180690372-7mr0n89f2g312opc4j3hgp28094k6205.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
