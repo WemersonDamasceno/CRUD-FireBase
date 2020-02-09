@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.example.testebancodadosfirebase.DAO.PessoaDAO;
 import com.example.testebancodadosfirebase.model.Pessoa;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     List<Pessoa> listPessoas;
     ArrayAdapter<Pessoa> arrayAdapter;
     Pessoa pessoaSelected;
+    PessoaDAO pessoaDAO;
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
@@ -43,10 +45,11 @@ public class MainActivity extends AppCompatActivity {
         editNome = findViewById(R.id.editNome);
         editEmail = findViewById(R.id.editEmail);
         listViewDados = findViewById(R.id.listViewDados);
+        pessoaDAO = new PessoaDAO();
 
         //Inicializando o banco de dados
         inicializandoFirebase();
-        eventoDataBase();
+        pegarDadosDataBase();
 
         listPessoas = new ArrayList<Pessoa>();
 
@@ -62,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void eventoDataBase() {
+    private void pegarDadosDataBase() {
         databaseReference.child("Pessoa").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -82,12 +85,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void inicializandoFirebase() {
+    public void inicializandoFirebase() {
         FirebaseApp.initializeApp(MainActivity.this);
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseDatabase.setPersistenceEnabled(true);
         databaseReference = firebaseDatabase.getReference();
-
     }
 
     @Override
@@ -105,7 +107,9 @@ public class MainActivity extends AppCompatActivity {
             pessoa.setNome(editNome.getText().toString());
             pessoa.setEmail(editEmail.getText().toString());
 
-            databaseReference.child("Pessoa").child(pessoa.getId()).setValue(pessoa);
+            //teste DAO
+            pessoaDAO.salvarPessoaBD(pessoa, MainActivity.this);
+            //databaseReference.child("Pessoa").child(pessoa.getId()).setValue(pessoa);
             limparCampos();
 
         } else if (id == R.id.menu_atualizar) {
@@ -113,14 +117,22 @@ public class MainActivity extends AppCompatActivity {
             p.setId(pessoaSelected.getId());
             p.setNome(editNome.getText().toString());
             p.setEmail(editEmail.getText().toString());
+
+            //testeDAO
+            pessoaDAO.atualizarPessoaBD(p, MainActivity.this);
+
             //salvar no banco de dados
-            databaseReference.child("Pessoa").child(p.getId()).setValue(p);
+            //databaseReference.child("Pessoa").child(p.getId()).setValue(p);
             limparCampos();
         } else if (id == R.id.menu_deletar) {
             Pessoa p = new Pessoa();
             p.setId(pessoaSelected.getId());
+
+            //teste PessoaDAO
+            pessoaDAO.removerPessoaBD(p, MainActivity.this);
+
             //remover do banco de dados
-            databaseReference.child("Pessoa").child(p.getId()).removeValue();
+            //databaseReference.child("Pessoa").child(p.getId()).removeValue();
             limparCampos();
         }
 
