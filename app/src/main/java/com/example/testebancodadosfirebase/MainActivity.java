@@ -28,10 +28,8 @@ import android.widget.Toast;
 
 import com.example.testebancodadosfirebase.DAO.PessoaDAO;
 import com.example.testebancodadosfirebase.model.Pessoa;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -56,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     Pessoa pessoaSelected;
     PessoaDAO pessoaDAO;
 
+
     final int GALERIA = 1;
     final int CAMERA = 3;
     final int PERMISSAO_REQUEST = 2;
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     //imagem BD
-    FirebaseStorage storage;
+    FirebaseStorage fireBaseStorage;
     StorageReference storageReference;
 
 
@@ -82,9 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
         editNome = findViewById(R.id.editNome);
         editEmail = findViewById(R.id.editEmail);
-        listViewDados = findViewById(R.id.listViewDados);
+        listViewDados = findViewById(R.id.recyclerView);
         pessoaDAO = new PessoaDAO();
-
 
         //imagens
         btCamera = findViewById(R.id.btCamera);
@@ -96,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
         //Inicializando o banco de dados
         inicializandoFirebase();
         pegarDadosDataBase();
-        //inicializando o firebase storage
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+        //inicializando o firebase fireBaseStorage
+        fireBaseStorage = FirebaseStorage.getInstance();
+        storageReference = fireBaseStorage.getReference();
         //permissao do usuario
         usuarioPermission();
 
@@ -135,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
     private void usuarioPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -202,6 +199,8 @@ public class MainActivity extends AppCompatActivity {
                 progressDialog.show();
 
                 StorageReference ref = storageReference.child("images/" + pessoa.getId());
+
+
                 ref.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -221,14 +220,17 @@ public class MainActivity extends AppCompatActivity {
                         progressDialog.setTitle("Uploaded " + (int) progress + "%");
                     }
                 });
+                /*
+                String idImg = ref.getName();
+                Task taskSnapshot = ref.child("images/").getDownloadUrl();
+                taskSnapshot.toString();
+                Toast.makeText(this,taskSnapshot.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, idImg, Toast.LENGTH_LONG).show();
 
+                 */
             }
 
-
-
-
             limparCampos();
-
 
         } else if (id == R.id.menu_atualizar) {
             Pessoa p = new Pessoa();
@@ -305,3 +307,35 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
+
+
+    /*
+    public void downloadFoto(final Pessoa pessoa){
+        storageReference = fireBaseStorage.getInstance().getReference();
+        reference = storageReference.child("images/"+ pessoa.getId());
+        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                String url = uri.toString();
+                downloadFiles(MainActivity.this, pessoa.getId(),".jpg", DIRECTORY_DOWNLOADS,url);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
+    }
+    private void downloadFiles(Context context, String fileName, String fileExtension, String destinationDirectory, String url) {
+        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName + fileExtension);
+
+        downloadManager.enqueue(request);
+
+    }
+
+     */

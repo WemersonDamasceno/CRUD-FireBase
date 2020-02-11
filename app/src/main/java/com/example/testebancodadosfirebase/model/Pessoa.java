@@ -1,9 +1,12 @@
 package com.example.testebancodadosfirebase.model;
 
+import android.widget.ImageView;
+
 public class Pessoa {
     private String id;
     private String nome;
     private String email;
+    private ImageView img;
 
 
     public Pessoa(String id, String nome, String email) {
