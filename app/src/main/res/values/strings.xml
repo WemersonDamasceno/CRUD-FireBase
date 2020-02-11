@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TesteBancoDadosFireBase</string>
+    <string name="selecionar_imagem">Selecionar Imagem</string>
 </resources>
