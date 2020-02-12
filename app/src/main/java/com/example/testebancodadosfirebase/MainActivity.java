@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.testebancodadosfirebase.DAO.PessoaDAO;
@@ -48,11 +49,13 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity {
     EditText editNome;
     EditText editEmail;
+    TextView txtNomeFoto;
     ListView listViewDados;
     List<Pessoa> listPessoas;
     ArrayAdapter<Pessoa> arrayAdapter;
     Pessoa pessoaSelected;
     PessoaDAO pessoaDAO;
+    Pessoa pessoa;
 
 
     final int GALERIA = 1;
@@ -78,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        pessoa = new Pessoa();
+        txtNomeFoto = findViewById(R.id.nomeFoto);
 
         editNome = findViewById(R.id.editNome);
         editEmail = findViewById(R.id.editEmail);
@@ -184,12 +190,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.menu_novo) {
-            Pessoa pessoa = new Pessoa();
+
             pessoa.setId(UUID.randomUUID().toString());
             pessoa.setNome(editNome.getText().toString());
             pessoa.setEmail(editEmail.getText().toString());
-
-            pessoaDAO.salvarPessoaBD(pessoa, MainActivity.this);
             //databaseReference.child("Pessoa").child(pessoa.getId()).setValue(pessoa);
 
             //salvar imagem no banco de dados FireBase;
@@ -198,12 +202,22 @@ public class MainActivity extends AppCompatActivity {
                 progressDialog.setTitle("Uploading...");
                 progressDialog.show();
 
-                StorageReference ref = storageReference.child("images/" + pessoa.getId());
+                storageReference = storageReference.child("images/" + pessoa.getId());
 
-
-                ref.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                storageReference.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                pessoa.setIdImage(uri.toString());
+                                pessoaDAO.salvarPessoaBD(pessoa, MainActivity.this);
+
+
+                                txtNomeFoto.setText(uri.toString());
+                            }
+                        });
+
                         progressDialog.dismiss();
                         Toast.makeText(MainActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
                     }

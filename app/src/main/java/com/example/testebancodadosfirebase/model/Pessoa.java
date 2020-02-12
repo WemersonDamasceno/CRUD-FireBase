@@ -1,18 +1,25 @@
 package com.example.testebancodadosfirebase.model;
 
-import android.widget.ImageView;
-
 public class Pessoa {
     private String id;
     private String nome;
     private String email;
-    private ImageView img;
+    private String idImage;
 
 
-    public Pessoa(String id, String nome, String email) {
+    public Pessoa(String id, String nome, String email, String idImage) {
         this.id = id;
         this.nome = nome;
         this.email = email;
+        this.idImage = idImage;
+    }
+
+    public String getIdImage() {
+        return idImage;
+    }
+
+    public void setIdImage(String idImage) {
+        this.idImage = idImage;
     }
 
     public Pessoa() {

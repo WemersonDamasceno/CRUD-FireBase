@@ -43,13 +43,19 @@
             android:text="Camera" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/nomeFoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="nome da foto" />
+
+
     <ImageView
         android:id="@+id/imgView"
         android:layout_width="300dp"
         android:layout_height="150dp"
         android:layout_gravity="center"
         android:scaleType="fitXY" />
-
 
     <ListView
         android:id="@+id/recyclerView"
