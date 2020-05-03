@@ -15,7 +15,7 @@ public class PessoaDAO extends Pessoa {
     DatabaseReference databaseReference;
 
 
-    //inicializando o banco de -
+    //inicializando o banco de dados
     public void inicializandoFirebase(Context context) {
         FirebaseApp.initializeApp(context);
         firebaseDatabase = FirebaseDatabase.getInstance();
